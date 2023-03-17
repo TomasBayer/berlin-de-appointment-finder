@@ -11,6 +11,9 @@ berlin-de-appointment-finder = "berlin_de_appointment_finder.cli:run"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+python-telegram-bot = "^20.1"
+requests = "^2.28.2"
+beautifulsoup4 = "^4.11.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7"
