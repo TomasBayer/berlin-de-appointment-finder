@@ -7,20 +7,10 @@ from typing import Iterator, Optional
 
 import telegram
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 from requests import Response, Session
 
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10) AppleWebKit/600.1.25 (KHTML, like Gecko) Version/8.0 Safari/600.1.25",  # noqa: E501
-    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
-    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",  # noqa: E501
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/600.1.17 (KHTML, like Gecko) Version/7.1 Safari/537.85.10",  # noqa: E501
-    "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
-    "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36"
-]
+ua = UserAgent()
 
 LOCATIONS = [122210, 122217, 327316, 122219, 327312, 122227, 122231, 327346, 122238, 122243, 327348, 122252, 329742,
              122260, 329745, 122262, 329748, 122254, 329751, 122271, 327278, 122273, 327274, 122277, 327276, 122280,
@@ -60,7 +50,7 @@ class AppointmentFinder:
         return f'{self.BASE_URL}/terminvereinbarung/termin/tag.php?termin=1&anliegen[]={service_id}&dienstleisterlist={dienstleister_list}&herkunft=http%3A%2F%2Fservice.berlin.de%2Fdienstleistung%2F120703%2F'  # noqa: E501
 
     def _request(self, url) -> Response:
-        return self.session.get(url, headers={'User-Agent': random.choice(USER_AGENTS)})
+        return self.session.get(url, headers={'User-Agent': ua.firefox})
 
     def find(self) -> Iterator[datetime.date]:
         url = self._build_url()
